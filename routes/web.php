@@ -34,11 +34,14 @@ Route::middleware(['middleware' => 'PreventBackHistory'])->group(function(){
 });
 
 /*Corporate Responsibility and Sustainability*/
-Route::group(['middleware' => ['isCrs', 'auth','PreventBackHistory']], function() {
+Route::group(['middleware' => ['isCrs', 'auth','PreventBackHistory'],
+              'prefix'     => 'crs'
+], function() {
     Route::get('/crs-dashboard', [CrsController::class, 'index'])->name('crs-dashboard');
     Route::get('/view_team', [CrsController::class, 'view_team'])->name('view_team');
     Route::get('/fa', [CrsController::class, 'field_assistants'])->name('fa');
     Route::get('/tl', [CrsController::class, 'team_lead'])->name('team_lead');
+
 
 
     Route::get('/add_team', [CrsController::class, 'add_team'])->name('add_team');
@@ -47,25 +50,35 @@ Route::group(['middleware' => ['isCrs', 'auth','PreventBackHistory']], function(
 
 
 /*Team Lead*/
-Route::group(['middleware' => ['isTeamLead', 'auth','PreventBackHistory']], function() {
+Route::group(['middleware' => ['isTeamLead', 'auth','PreventBackHistory'],
+              'prefix' => 'team_lead'
+        ], function() {
     Route::get('/tl-dashboard', [TeamLeadController::class, 'index'])->name('tl-dashboard');
 });
 
 
 /*Farm Manager*/
-Route::group(['middleware' => ['isFarmManager', 'auth','PreventBackHistory']], function() {
+Route::group(['middleware' => ['isFarmManager', 'auth','PreventBackHistory'],
+              'prefix'     => 'farm_manager'
+       ], function() {
     Route::get('/fm-dashboard', [FarmManagerController::class, 'index'])->name('fm-dashboard');
 });
 
 
 /*Field Assistant*/
-Route::group(['middleware' => ['isFieldAssistant', 'auth','PreventBackHistory']], function() {
+Route::group(['middleware' => ['isFieldAssistant', 'auth','PreventBackHistory'],
+              'prefix'     => 'field_assistant'
+     ], function() {
     Route::get('/fa-dashboard', [FieldAssistantController::class, 'index'])->name('fa-dashboard');
+
+    Route::get('/fa_profile/{id}', [FieldAssistantController::class, 'field_assistant_profile'])->name('fa_profile/{id}');
 });
 
 
 /*Monitoring and Evaluation Executive*/
-Route::group(['prefix' => 'meExec', 'middleware' => ['isMeExec', 'auth','PreventBackHistory']], function() {
+Route::group([ 'middleware' => ['isMeExec', 'auth','PreventBackHistory'],
+               'prefix' => 'meExec'
+     ], function() {
     Route::get('/meExec-dashboard', [MeExecController::class, 'index'])->name('meExec-dashboard');
 });
 
